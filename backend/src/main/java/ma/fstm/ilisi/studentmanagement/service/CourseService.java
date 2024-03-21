@@ -16,10 +16,6 @@ public class CourseService implements CourseServiceInterface {
     @Autowired
     private CourseRepositoryInterface courseRepository;
 
-    public CourseService(CourseRepositoryInterface courseRepository) {
-        this.courseRepository = courseRepository;
-    }
-
     @Override
     public List<CourseDTO> findAll() {
         return this.courseRepository.findAll().stream().map(this::mapToCourseDTO).collect(Collectors.toList());
@@ -62,7 +58,6 @@ public class CourseService implements CourseServiceInterface {
         return CourseDTO.builder()
                 .id(course.getId())
                 .name(course.getName())
-                .grades(course.getGrades().stream().map(grade -> new GradeService().mapToGradeDTO(grade)).collect(Collectors.toList()))
                 .build();
     }
 
@@ -71,7 +66,6 @@ public class CourseService implements CourseServiceInterface {
         return Course.builder()
                 .id(courseDTO.getId())
                 .name(courseDTO.getName())
-                .grades(courseDTO.getGrades().stream().map(gradeDTO -> new GradeService().mapToGrade(gradeDTO)).collect(Collectors.toList()))
                 .build();
     }
 }

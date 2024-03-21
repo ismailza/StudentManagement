@@ -1,7 +1,11 @@
 package ma.fstm.ilisi.studentmanagement.service;
 
+import ma.fstm.ilisi.studentmanagement.dto.CourseDTO;
+import ma.fstm.ilisi.studentmanagement.dto.GradeDTO;
 import ma.fstm.ilisi.studentmanagement.dto.StudentDTO;
 import ma.fstm.ilisi.studentmanagement.exception.StudentNotFoundException;
+import ma.fstm.ilisi.studentmanagement.model.Course;
+import ma.fstm.ilisi.studentmanagement.model.Grade;
 import ma.fstm.ilisi.studentmanagement.model.Student;
 import ma.fstm.ilisi.studentmanagement.repository.StudentRepositoryInterface;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +74,14 @@ public class StudentService implements StudentServiceInterface {
                 .birthday(student.getBirthday())
                 .cne(student.getCne())
                 .email(student.getEmail())
+                .grades(student.getGrades().stream().map(grade -> GradeDTO.builder()
+                        .id(grade.getId())
+                        .grade(grade.getGrade())
+                        .course(CourseDTO.builder()
+                                .id(grade.getCourse().getId())
+                                .name(grade.getCourse().getName())
+                                .build())
+                        .build()).toList())
                 .build();
     }
 
@@ -82,6 +94,14 @@ public class StudentService implements StudentServiceInterface {
                 .birthday(studentDTO.getBirthday())
                 .cne(studentDTO.getCne())
                 .email(studentDTO.getEmail())
+                .grades(studentDTO.getGrades().stream().map(gradeDTO -> Grade.builder()
+                        .id(gradeDTO.getId())
+                        .grade(gradeDTO.getGrade())
+                        .course(Course.builder()
+                                .id(gradeDTO.getCourse().getId())
+                                .name(gradeDTO.getCourse().getName())
+                                .build())
+                        .build()).toList())
                 .build();
     }
 }
